@@ -2,6 +2,22 @@ import os
 import openpyxl
 from openpyxl import load_workbook as lwb
 from datetime import datetime as dt
+def create_ls(ls,i):
+    new_ls = str(ls)+str(i)
+    col_simv = len(new_ls)
+    if col_simv == 8:
+        itog_ls = "704"+str(ls)+str(i)
+    if col_simv == 9:
+        itog_ls = "70"+str(ls)+str(i)
+    if col_simv == 10:
+        itog_ls = "7"+str(ls)+str(i)
+    if col_simv == 11:
+        itog_ls = str(ls)+str(i)
+    
+    return int(itog_ls)
+def replace_xl(file,dir):
+    new_path = dir+"/"+file
+    os.replace(file,new_path)
 def create_dir():
     data_today = dt.today()
     dir_save = "a" + str(data_today).replace("-", "").replace(":", "").replace(".", "").replace(" ", "")
@@ -45,14 +61,14 @@ def create_file_ls(file_item, dir_save):
         ws_pomesh.cell(i-2,1).value = i
 
         ws_base.cell(i-2,1).value = i
-        ws_base.cell(i-2,2).value = ls+i
+        ws_base.cell(i-2,2).value = create_ls(ls,i)
         ws_base.cell(i-2,4).value = "ЛС ТКО"
         ws_base.cell(i-2,21).value = 0
 
         ws_osnovanie.cell(i-2,1).value = i
         ws_osnovanie.cell(i-2,2).value = "Договор по обращению с ТКО (ЛС ТКО или ЛС РЦ)"
         ws_osnovanie.cell(i-2,3).value = "b38f0787-c2a2-4a1d-b646-6efb7a85580b"
-        ws_osnovanie.cell(i-2,10).value = "767010"
+        ws_osnovanie.cell(i-2,10).value = "767010"+str(i-2)
         ws_osnovanie.cell(i-2,11).value = "01.01.2019"
         ws_osnovanie.cell(i-2,12).value = "25.07.2028"
 
@@ -105,6 +121,7 @@ def for_igd(file_item,dir):
     name_file_ls = create_file_ls(file_item,dir)
     print(" Создан файл - ", name_file)
     print(" Создан файл - ", name_file_ls)
+    replace_xl(file_item,dir)
 
 def check_xl(dir):
     list_files = os.listdir()
@@ -118,5 +135,6 @@ if __name__ == '__main__':
     print_hi('Создаем файлы загрузки')
     dir = create_dir()
     check_xl(dir)
+    
 
 # See PyCharm help at https://www.jetbrains.com/help/pycharm/
